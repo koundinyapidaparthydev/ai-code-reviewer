@@ -1,0 +1,11 @@
+{
+  "id": "18-eval",
+  "category": "security",
+  "must_fix": [
+    {
+      "file": "dyn.js",
+      "rule": "unsafe_eval",
+      "line": 3
+    }
+  ]
+}

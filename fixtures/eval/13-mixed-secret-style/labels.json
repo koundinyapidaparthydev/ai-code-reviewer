@@ -1,0 +1,11 @@
+{
+  "id": "13-mixed-secret-style",
+  "category": "mixed",
+  "must_fix": [
+    {
+      "file": "keys.js",
+      "rule": "leaked_secret",
+      "line": 3
+    }
+  ]
+}

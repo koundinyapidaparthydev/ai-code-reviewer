@@ -1,0 +1,11 @@
+{
+  "id": "19-weak-jwt",
+  "category": "security",
+  "must_fix": [
+    {
+      "file": "auth.js",
+      "rule": "weak_jwt",
+      "line": 5
+    }
+  ]
+}

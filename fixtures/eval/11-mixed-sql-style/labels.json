@@ -1,0 +1,11 @@
+{
+  "id": "11-mixed-sql-style",
+  "category": "mixed",
+  "must_fix": [
+    {
+      "file": "search.js",
+      "rule": "sql_concat",
+      "line": 4
+    }
+  ]
+}

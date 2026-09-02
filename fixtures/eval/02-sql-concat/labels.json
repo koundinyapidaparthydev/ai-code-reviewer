@@ -1,0 +1,11 @@
+{
+  "id": "02-sql-concat",
+  "category": "bug",
+  "must_fix": [
+    {
+      "file": "users.js",
+      "rule": "sql_concat",
+      "line": 3
+    }
+  ]
+}

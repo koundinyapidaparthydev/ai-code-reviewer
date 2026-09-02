@@ -1,0 +1,11 @@
+{
+  "id": "01-null-deref",
+  "category": "bug",
+  "must_fix": [
+    {
+      "file": "profile.js",
+      "rule": "null_deref",
+      "line": 4
+    }
+  ]
+}

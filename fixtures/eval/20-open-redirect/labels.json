@@ -1,0 +1,11 @@
+{
+  "id": "20-open-redirect",
+  "category": "security",
+  "must_fix": [
+    {
+      "file": "go.js",
+      "rule": "open_redirect",
+      "line": 3
+    }
+  ]
+}

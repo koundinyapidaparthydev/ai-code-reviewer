@@ -1,0 +1,11 @@
+{
+  "id": "15-mixed-await-style",
+  "category": "mixed",
+  "must_fix": [
+    {
+      "file": "boot.js",
+      "rule": "unused_await",
+      "line": 4
+    }
+  ]
+}

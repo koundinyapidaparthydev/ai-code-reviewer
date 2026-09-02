@@ -1,0 +1,16 @@
+{
+  "id": "03-leaked-secret",
+  "category": "bug",
+  "must_fix": [
+    {
+      "file": "config.js",
+      "rule": "leaked_secret",
+      "line": 1
+    },
+    {
+      "file": "config.js",
+      "rule": "leaked_secret",
+      "line": 2
+    }
+  ]
+}

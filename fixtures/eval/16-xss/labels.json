@@ -1,0 +1,11 @@
+{
+  "id": "16-xss",
+  "category": "security",
+  "must_fix": [
+    {
+      "file": "comment.js",
+      "rule": "xss",
+      "line": 3
+    }
+  ]
+}

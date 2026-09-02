@@ -1,0 +1,11 @@
+{
+  "id": "14-mixed-offbyone-style",
+  "category": "mixed",
+  "must_fix": [
+    {
+      "file": "walk.js",
+      "rule": "off_by_one",
+      "line": 4
+    }
+  ]
+}

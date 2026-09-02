@@ -1,0 +1,11 @@
+{
+  "id": "04-off-by-one",
+  "category": "bug",
+  "must_fix": [
+    {
+      "file": "sum.js",
+      "rule": "off_by_one",
+      "line": 4
+    }
+  ]
+}

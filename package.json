@@ -1,0 +1,10 @@
+{
+  "name": "ai-code-reviewer",
+  "private": true,
+  "description": "Tool-using code reviewer MVP",
+  "scripts": {
+    "eval": "npm run eval --prefix ai-code-reviewer-backend",
+    "demo:seed": "npm run demo:seed --prefix ai-code-reviewer-backend",
+    "types": "npm run types --prefix ai-code-reviewer-backend && npm run types --prefix ai-code-reviewer-frontend && npm run types --prefix mcp-server"
+  }
+}

@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(uuid())
+  name            String         @db.VarChar(255)
+  email           String         @unique @db.VarChar(255)
+  passwordHash    String         @db.VarChar(255)
+  emailVerified   Boolean        @default(false)
+  githubUsername  String?        @db.VarChar(255)
+  githubId        Int?           @unique
+  avatarUrl       String?        @db.Text
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  lastLoginAt     DateTime?
+  isActive        Boolean        @default(true)
+  
+  repositories    Repository[]
+  validations     Validation[]
+  notifications   Notification[]
+  settings        UserSettings?
+  apiKeys         ApiKey[]
+  
+  @@index([email])
+  @@index([githubId])
+  @@map("users")
+}
+
+model UserSettings {
+  id                      String   @id @default(uuid())
+  userId                  String   @unique
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Notification preferences
+  emailNotifications      Boolean  @default(true)
+  notificationFrequency   String   @default("realtime") @db.VarChar(20)
+  webhookUrl              String?  @db.Text
+  
+  // Validation preferences
+  defaultAiModel          String   @default("gpt-4") @db.VarChar(50)
+  validationSensitivity   String   @default("moderate") @db.VarChar(20)
+  defaultFileExtensions   Json     @default("[]")
+  excludedPaths           Json     @default("[]")
+  maxFilesPerValidation   Int      @default(20)
+  
+  // Encrypted API keys
+  githubTokenEncrypted    String?  @db.Text
+  aiApiKeyEncrypted       String?  @db.Text
+  
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  
+  @@index([userId])
+  @@map("user_settings")
+}
+
+model Repository {
+  id                    String          @id @default(uuid())
+  userId                String
+  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name                  String          @db.VarChar(255)
+  fullName              String          @db.VarChar(255)
+  githubId              BigInt          @unique
+  defaultBranch         String          @default("main") @db.VarChar(100)
+  
+  webhookId             BigInt?
+  webhookActive         Boolean         @default(false)
+  autoValidate          Boolean         @default(true)
+  
+  lastValidationAt      DateTime?
+  totalValidations      Int             @default(0)
+  
+  githubAccessToken     String?         @db.Text
+  validationRules       Json            @default("{}")
+  
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  
+  validations           Validation[]
+  webhookSecret         WebhookSecret?
+  
+  @@index([userId])
+  @@index([githubId])
+  @@index([fullName])
+  @@map("repositories")
+}
+
+model Validation {
+  id                String         @id @default(uuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  repositoryId      String?
+  repository        Repository?    @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  
+  // Commit info
+  commitHash        String?        @db.VarChar(40)
+  commitMessage     String?        @db.Text
+  commitAuthor      String?        @db.VarChar(255)
+  branch            String?        @db.VarChar(255)
+  
+  // Validation details
+  validationType    String         @db.VarChar(20)
+  status            String         @default("pending") @db.VarChar(20)
+  
+  // Results
+  totalFiles        Int            @default(0)
+  filesProcessed    Int            @default(0)
+  overallScore      Decimal?       @db.Decimal(5, 2)
+  aiSummary         String?        @db.Text
+  findings          Json           @default("[]")
+  toolCalls         Json           @default("[]")
+  reviewMode        String?        @db.VarChar(20)
+  workspacePath     String?        @db.Text
+  
+  // Metadata
+  validationOptions Json           @default("{}")
+  errorMessage      String?        @db.Text
+  processingTimeMs  Int?
+  
+  createdAt         DateTime       @default(now())
+  completedAt       DateTime?
+  updatedAt         DateTime       @updatedAt
+  
+  fileResults       FileResult[]
+  
+  @@index([userId])
+  @@index([repositoryId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([commitHash])
+  @@map("validations")
+}
+
+model FileResult {
+  id                String       @id @default(uuid())
+  validationId      String
+  validation        Validation   @relation(fields: [validationId], references: [id], onDelete: Cascade)
+  
+  // File info
+  fileName          String       @db.VarChar(500)
+  filePath          String       @db.Text
+  fileExtension     String?      @db.VarChar(20)
+  fileSize          Int?
+  linesChanged      Int?
+  
+  // Analysis results
+  aiAnalysis        String       @db.Text
+  score             Decimal      @db.Decimal(5, 2)
+  issues            Json         @default("[]")
+  recommendations   Json         @default("[]")
+  
+  // Processing
+  status            String       @default("pending") @db.VarChar(20)
+  errorMessage      String?      @db.Text
+  processingTimeMs  Int?
+  
+  createdAt         DateTime     @default(now())
+  
+  @@index([validationId])
+  @@index([status])
+  @@map("file_results")
+}
+
+model Notification {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title             String   @db.VarChar(255)
+  message           String   @db.Text
+  notificationType  String   @db.VarChar(50)
+  
+  relatedId         String?
+  relatedType       String?  @db.VarChar(50)
+  
+  isRead            Boolean  @default(false)
+  readAt            DateTime?
+  
+  createdAt         DateTime @default(now())
+  
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model ApiKey {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  keyName       String   @db.VarChar(100)
+  keyType       String   @db.VarChar(50)
+  encryptedKey  String   @db.Text
+  
+  isActive      Boolean  @default(true)
+  lastUsedAt    DateTime?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([keyType])
+  @@map("api_keys")
+}
+
+model WebhookSecret {
+  id            String     @id @default(uuid())
+  repositoryId  String     @unique
+  repository    Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  
+  secretHash    String     @db.VarChar(255)
+  isActive      Boolean    @default(true)
+  
+  createdAt     DateTime   @default(now())
+  
+  @@index([repositoryId])
+  @@map("webhook_secrets")
+}

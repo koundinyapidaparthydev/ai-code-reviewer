@@ -1,0 +1,11 @@
+{
+  "id": "05-unused-await",
+  "category": "bug",
+  "must_fix": [
+    {
+      "file": "loader.js",
+      "rule": "unused_await",
+      "line": 3
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "17-path-traversal",
+  "category": "security",
+  "must_fix": [
+    {
+      "file": "files.js",
+      "rule": "path_traversal",
+      "line": 5
+    }
+  ]
+}

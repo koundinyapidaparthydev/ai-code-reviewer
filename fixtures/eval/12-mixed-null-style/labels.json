@@ -1,0 +1,11 @@
+{
+  "id": "12-mixed-null-style",
+  "category": "mixed",
+  "must_fix": [
+    {
+      "file": "account.js",
+      "rule": "null_deref",
+      "line": 5
+    }
+  ]
+}

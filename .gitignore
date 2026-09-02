@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+dist/
+.next/
+uploads/
+*.log
+.env
+.env.local
+ai-code-reviewer-backend/eval/last-report.json
+mcp-server/dist/
