@@ -38,9 +38,7 @@ if (config.env === 'development') {
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Rate limiting
-app.use(generalRateLimiter);
-
+// Public health — no auth, no rate limit
 app.get('/health', async (_req, res) => {
   let redis = false;
   let db = false;
@@ -70,6 +68,9 @@ app.get('/health', async (_req, res) => {
 
   res.status(payload.ok ? 200 : 503).json(payload);
 });
+
+// Rate limiting
+app.use(generalRateLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/validations', validationRoutes);

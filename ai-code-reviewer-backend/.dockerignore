@@ -1,0 +1,10 @@
+node_modules
+dist
+logs
+uploads
+eval/last-report.json
+.env
+*.log
+.git
+__tests__
+coverage

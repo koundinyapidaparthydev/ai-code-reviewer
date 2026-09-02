@@ -47,7 +47,7 @@ The runner scores every folder in `fixtures/eval/` (must_fix labels vs critical/
 
 `REVIEW_MODE=tools` is the default (plan → up to 8 read-only tool calls → structured findings). `REVIEW_MODE=legacy` dumps file contents into GPT-4. Missing/placeholder `OPENAI_API_KEY` uses lint+grep only (no billed tokens).
 
-All-in-one: `docker compose up --build` (api + web + redis + postgres). Do not deploy this MVP.
+All-in-one local deploy: `docker compose up --build` (api + web + redis + postgres). Live URLs and demo login: [DEMO_STAGING.md](./DEMO_STAGING.md). MCP is stdio-only — do not host it.
 
 ## Architecture
 
