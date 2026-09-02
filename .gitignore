@@ -8,3 +8,4 @@ uploads/
 .env.local
 ai-code-reviewer-backend/eval/last-report.json
 mcp-server/dist/
+docker-compose.override.yml

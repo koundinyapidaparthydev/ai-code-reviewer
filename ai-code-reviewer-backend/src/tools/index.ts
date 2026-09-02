@@ -38,7 +38,14 @@ export async function executeTool(
   if (!tool) {
     return { ok: false, error: `Unknown tool: ${name}` };
   }
-  return tool.execute(input, ctx);
+  try {
+    return await tool.execute(input, ctx);
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : 'Tool execution failed',
+    };
+  }
 }
 
 export function previewOutput(data: unknown, max = 800): string {

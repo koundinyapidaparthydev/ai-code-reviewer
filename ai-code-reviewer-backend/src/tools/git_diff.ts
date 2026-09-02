@@ -1,6 +1,6 @@
 import { execFile } from 'child_process';
 import { promisify } from 'util';
-import { resolveWorkspaceRoot, SandboxError } from './sandbox';
+import { resolveSafePath, resolveWorkspaceRoot, SandboxError } from './sandbox';
 import { Tool, ToolContext, ToolResult } from './types';
 
 const execFileAsync = promisify(execFile);
@@ -25,13 +25,13 @@ export const gitDiffTool: Tool<GitDiffInput> = {
   async execute(input: GitDiffInput, ctx: ToolContext): Promise<ToolResult> {
     try {
       const cwd = resolveWorkspaceRoot(ctx.workspaceRoot);
-      const extra = input.path && input.path !== '.' ? ['--', input.path] : [];
-
-      if (input.path) {
-        if (input.path.includes('..') || input.path.startsWith('-')) {
-          return { ok: false, error: 'Invalid path for git_diff' };
-        }
+      if (input.path && input.path.startsWith('-')) {
+        return { ok: false, error: 'Invalid path for git_diff' };
       }
+      if (input.path && input.path !== '.') {
+        resolveSafePath(ctx.workspaceRoot, input.path);
+      }
+      const extra = input.path && input.path !== '.' ? ['--', input.path] : [];
 
       const { stdout, stderr } = await execFileAsync('git', ['diff', '--no-color', ...extra], {
         cwd,

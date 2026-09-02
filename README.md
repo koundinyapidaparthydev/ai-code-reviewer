@@ -31,6 +31,20 @@ npm run eval           # prints precision/recall, writes eval/last-report.json
 # GET /api/eval/last (Bearer token) returns that report
 ```
 
+## Re-run eval (Test MVP)
+
+From the repo root or the backend package:
+
+```bash
+cd ai-code-reviewer-backend
+# leave OPENAI_API_KEY empty (or a placeholder) to use the deterministic sandbox reviewer
+npm run eval
+# same command from repo root:
+# npm run eval
+```
+
+The runner scores every folder in `fixtures/eval/` (must_fix labels vs critical/high findings), prints precision/recall/f1, and writes `ai-code-reviewer-backend/eval/last-report.json`. See `TEST_MVP.md` for the 41–65 checklist.
+
 `REVIEW_MODE=tools` is the default (plan → up to 8 read-only tool calls → structured findings). `REVIEW_MODE=legacy` dumps file contents into GPT-4. Missing/placeholder `OPENAI_API_KEY` uses lint+grep only (no billed tokens).
 
 All-in-one: `docker compose up --build` (api + web + redis + postgres). Do not deploy this MVP.

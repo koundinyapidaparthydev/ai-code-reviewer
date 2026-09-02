@@ -16,7 +16,10 @@ export const signupSchema = z.object({
 
 export const loginSchema = z.object({
   body: z.object({
-    email: z.string().email('Invalid email format'),
+    email: z
+      .string()
+      .min(3, 'Email is required')
+      .regex(/^[^\s@]+@[^\s@]+$/, 'Invalid email format'),
     password: z.string().min(1, 'Password is required'),
   }),
 });

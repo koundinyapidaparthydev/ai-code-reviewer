@@ -13,7 +13,7 @@ import { ALL_TOOLS, ToolContext, executeTool, previewOutput, listFilesTool } fro
 import { deterministicReview } from './deterministic.reviewer';
 import aiService from './ai.service';
 
-const MAX_TOOL_CALLS = 8;
+export const MAX_TOOL_CALLS = 8;
 
 const SEVERITIES: FindingSeverity[] = ['critical', 'high', 'medium', 'low'];
 
@@ -55,7 +55,7 @@ function openaiTools(): OpenAI.Chat.ChatCompletionTool[] {
   }));
 }
 
-async function runToolAgent(workspacePath: string): Promise<AgentReviewResult> {
+export async function runToolAgent(workspacePath: string): Promise<AgentReviewResult> {
   const openai = new OpenAI({ apiKey: config.openai.apiKey });
   const ctx: ToolContext = { workspaceRoot: workspacePath };
   const toolCalls: ToolCallRecord[] = [];
@@ -190,7 +190,7 @@ ${filePreview}`,
   };
 }
 
-async function runLegacyDump(workspacePath: string): Promise<AgentReviewResult> {
+export async function runLegacyDump(workspacePath: string): Promise<AgentReviewResult> {
   const listed = await listFilesTool.execute({ path: '.' }, { workspaceRoot: workspacePath });
   const files =
     listed.ok && listed.data && typeof listed.data === 'object'

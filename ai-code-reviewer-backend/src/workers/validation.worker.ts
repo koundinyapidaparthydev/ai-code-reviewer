@@ -9,7 +9,15 @@ import { io } from '../websocket';
 import logger from '../utils/logger';
 import { createJobWorkspace } from '../tools/workspace';
 
-class ValidationProcessor {
+function emitSafe(userId: string, event: string, payload: unknown): void {
+  try {
+    io?.to(userId).emit(event, payload);
+  } catch {
+    // WebSocket may be uninitialized in worker-only or test runs
+  }
+}
+
+export class ValidationProcessor {
   async processValidation(job: Job<ValidationJob>): Promise<void> {
     const { validationId, userId, files } = job.data;
     let workspacePath = job.data.workspacePath;
@@ -22,7 +30,7 @@ class ValidationProcessor {
         data: { status: 'processing' },
       });
 
-      io.to(userId).emit('validation:started', { validationId });
+      emitSafe(userId, 'validation:started', { validationId });
 
       if (!workspacePath) {
         workspacePath = await createJobWorkspace(
@@ -101,7 +109,7 @@ class ValidationProcessor {
         actionUrl: `/validations/${validationId}`,
       });
 
-      io.to(userId).emit('validation:completed', {
+      emitSafe(userId, 'validation:completed', {
         validationId,
         overallScore: review.score,
         filesAnalyzed: files.length,
@@ -132,7 +140,7 @@ class ValidationProcessor {
         actionUrl: `/validations/${validationId}`,
       });
 
-      io.to(userId).emit('validation:failed', {
+      emitSafe(userId, 'validation:failed', {
         validationId,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -147,10 +155,12 @@ class ValidationProcessor {
   }
 }
 
-const processor = new ValidationProcessor();
+export const processor = new ValidationProcessor();
 
-validationQueue.process(async (job) => {
-  await processor.processValidation(job);
-});
+if (process.env.START_QUEUE_WORKER !== '0') {
+  validationQueue.process(async (job) => {
+    await processor.processValidation(job);
+  });
+}
 
 export default validationQueue;
