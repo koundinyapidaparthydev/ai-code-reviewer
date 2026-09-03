@@ -1,8 +1,8 @@
 # Retest MVP (items 86–100)
 
-Last run: 2026-09-02. Local Docker Compose only. No cloud deploy. MCP not hosted.
+**Codebird** reviewer demo. Last run: 2026-09-02. Local Docker Compose only. No cloud deploy. MCP not hosted.
 
-Stack: web http://localhost:3002 · API http://localhost:5001 · Postgres 5433 · Redis 6381.
+Stack: web http://localhost:3002 · API http://localhost:5001 · Postgres 5433 · Redis 6381. Browser tab and login brand: **Codebird**.
 
 ## Checklist
 
@@ -21,7 +21,7 @@ Stack: web http://localhost:3002 · API http://localhost:5001 · Postgres 5433 �
 | 96 | MCP stdio locally (not staging) | **pass** | Host `mcp-server` stdio: `initialize`, `tools/list` (`read_file`, `grep`, `list_files`), `list_files` on `01-null-deref/input` → `profile.js`. Not in compose. |
 | 97 | Fix only retest bugs | **pass** | Only the login email regex. No new features. No hosted MCP. No cloud. |
 | 98 | 90-second demo notes | **pass** | See below. |
-| 99 | No AplifyAI / Exam Prep leftovers in README | **pass** | Repo-wide search: no matches. README is AI Code Reviewer only. |
+| 99 | No AplifyAI / Exam Prep leftovers in README | **pass** | Repo-wide search: no matches. README is Codebird only. |
 | 100 | Mark reviewer demo MVP done | **pass** | This file. Reviewer demo MVP is done on local Compose. |
 
 **Totals:** 15 items → **15 pass / 0 fail / 0 skip**.
@@ -31,10 +31,10 @@ Stack: web http://localhost:3002 · API http://localhost:5001 · Postgres 5433 �
 ## 90-second demo
 
 1. Stack already up: `curl -sS http://localhost:5001/health` → `{ ok, redis, db, reviewMode: "tools" }`.
-2. Open http://localhost:3002/login. Sign in `demo@local` / `demo-password`.
-3. Open Validations. Click the row “Demo seed from 01-null-deref”.
-4. Confirm the high null-deref finding on `profile.js` and the tool-call list (`list_files`, `grep`, `run_lint`, `git_diff`).
-5. Optional: Manual validation → upload `fixtures/eval/01-null-deref/input/profile.js` → same findings without an OpenAI key.
+2. Open http://localhost:3002/login. Sign in to **Codebird** with `demo@local` / `demo-password`.
+3. Open Reviews. Click the card “Demo seed from 01-null-deref”.
+4. Confirm the high null-deref finding on `profile.js` and the tools Codebird used (`list_files`, `grep`, `run_lint`, `git_diff`).
+5. Optional: New review → upload `fixtures/eval/01-null-deref/input/profile.js` → same findings without an OpenAI key.
 
 Host eval (not required for the live click-through): `npm run eval` from the repo root. MCP stays local stdio (`mcp-server/`); do not host it.
 

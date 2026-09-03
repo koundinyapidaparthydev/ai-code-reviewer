@@ -1,4 +1,6 @@
-# AI Code Reviewer
+# Codebird
+
+A bird reviews your code. Codebird reads your files, then tells you what to fix.
 
 Tool-using code reviewer MVP: upload a workspace, queue a job, inspect with sandboxed tools, persist findings, and score labeled evals. Optional local stdio MCP extract. Not a marketplace, not hosted MCP.
 
@@ -55,7 +57,7 @@ All-in-one local deploy: `docker compose up --build` (api + web + redis + postgr
 
 Read-only tools: `read_file`, `grep`, `list_files`, `run_lint`, `git_diff`. Path traversal is rejected. Local MCP (`mcp-server/`) reuses `read_file` / `grep` / `list_files` over stdio only.
 
-An intelligent code review platform powered by AI that automatically analyzes your code commits and provides detailed feedback, suggestions, and quality scores.
+**Codebird** is an intelligent code review platform: a bird-themed UI over a tool-using reviewer that analyzes commits and uploaded files, then shows findings in plain English.
 
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -72,7 +74,7 @@ An intelligent code review platform powered by AI that automatically analyzes yo
 - **📈 Statistics Dashboard** - Track your code quality metrics over time
 - **⚙️ Customizable Settings** - Configure AI models, sensitivity, and preferences
 - **🔐 Secure Authentication** - JWT-based auth with password reset functionality
-- **🎨 Modern UI** - Clean, responsive interface built with Next.js 14 and Tailwind CSS
+- **🐦 Codebird UI** - Warm cream, ink, and coral; a bird mark; findings as readable cards
 
 ## 🏗️ Architecture
 
@@ -367,4 +369,4 @@ Give a ⭐️ if this project helped you!
 
 ---
 
-**Built with ❤️ using Next.js, Express, and OpenAI**
+**Codebird — a bird reviews your code.** Built with Next.js, Express, and OpenAI.

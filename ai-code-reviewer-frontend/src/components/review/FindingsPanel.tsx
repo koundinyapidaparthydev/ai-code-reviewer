@@ -1,7 +1,7 @@
 import React from 'react';
 import { Finding, ToolCallRecord } from '@/types';
-import { Badge } from '@/components/common/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/Card';
+import { severityChipClass, toolDuration, toolPlainName } from '@/lib/reviewCopy';
 
 function severityVariant(severity: Finding['severity']) {
   if (severity === 'critical' || severity === 'high') return 'error' as const;
@@ -19,89 +19,114 @@ export function FindingsPanel({
   reviewMode?: string;
 }) {
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Findings</CardTitle>
-            {reviewMode && (
-              <span className="text-xs text-gray-500">mode: {reviewMode}</span>
-            )}
+    <div className="space-y-8">
+      <section>
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div>
+            <h2 className="font-display text-2xl font-semibold text-ink-800">
+              What Codebird found
+            </h2>
+            <p className="mt-1 text-sm text-ink-500">
+              {findings.length === 0
+                ? 'Nothing to fix in this pass.'
+                : `${findings.length} thing${findings.length === 1 ? '' : 's'} to look at.`}
+            </p>
           </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          {findings.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-gray-500">No findings recorded.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Severity
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      File
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Line
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Message
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {findings.map((finding, index) => (
-                    <tr key={`${finding.file}-${finding.line}-${index}`}>
-                      <td className="px-4 py-3">
-                        <Badge variant={severityVariant(finding.severity)}>
-                          {finding.severity}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{finding.file}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">
-                        {finding.line ?? '—'}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        <p>{finding.message}</p>
-                        {finding.evidence && (
-                          <p className="mt-1 font-mono text-xs text-gray-500">
-                            {finding.evidence}
-                          </p>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          {reviewMode && (
+            <p className="text-xs text-ink-400">
+              Codebird checked this file
+            </p>
           )}
-        </CardContent>
-      </Card>
+        </div>
+
+        {findings.length === 0 ? (
+          <Card>
+            <CardContent className="px-6 py-10 text-center text-sm text-ink-400">
+              No findings recorded.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {findings.map((finding, index) => (
+              <article
+                key={`${finding.file}-${finding.line}-${index}`}
+                className="stagger-in hover-lift rounded-paper border border-ink-100 bg-cream-50 p-5 shadow-paper"
+                style={{ '--i': index } as React.CSSProperties}
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide ${severityChipClass(
+                      finding.severity
+                    )}`}
+                    data-variant={severityVariant(finding.severity)}
+                  >
+                    {finding.severity}
+                  </span>
+                  <span className="font-mono text-sm text-ink-600">{finding.file}</span>
+                  {finding.line != null && (
+                    <span className="text-sm text-ink-400">line {finding.line}</span>
+                  )}
+                </div>
+                <p className="mt-3 text-base font-medium text-ink-800">{finding.message}</p>
+                {finding.evidence && (
+                  <pre className="mt-3 overflow-x-auto rounded-xl bg-ink-800 px-4 py-3 font-mono text-xs leading-relaxed text-cream-100">
+                    {finding.evidence}
+                  </pre>
+                )}
+                {finding.suggestion && (
+                  <p className="mt-3 text-sm text-ink-500">
+                    <span className="font-medium text-ink-700">Try this: </span>
+                    {finding.suggestion}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Tools the agent called</CardTitle>
+        <CardHeader className="border-b-0 pb-0">
+          <CardTitle>Tools Codebird used</CardTitle>
+          <p className="mt-1 text-sm text-ink-500">
+            How the bird walked through this review.
+          </p>
         </CardHeader>
         <CardContent>
           {toolCalls.length === 0 ? (
-            <p className="text-sm text-gray-500">No tool calls recorded.</p>
+            <p className="text-sm text-ink-400">No tool calls recorded.</p>
           ) : (
-            <ol className="space-y-3">
+            <ol className="relative ml-2 space-y-0">
+              <span
+                className="absolute bottom-3 left-[7px] top-3 w-px origin-top bg-ink-100"
+                style={{ animation: 'timeline-grow 0.7s ease both' }}
+                aria-hidden
+              />
               {toolCalls.map((call, index) => (
-                <li key={`${call.name}-${index}`} className="rounded-md border border-gray-200 p-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900">
-                      {index + 1}. {call.name}
-                    </p>
-                    <span className="text-xs text-gray-500">
-                      {call.durationMs}ms {call.ok ? '' : '(failed)'}
-                    </span>
+                <li
+                  key={`${call.name}-${index}`}
+                  className="stagger-in relative flex gap-4 py-3 pl-1"
+                  style={{ '--i': index } as React.CSSProperties}
+                >
+                  <span
+                    className={`relative z-10 mt-1.5 h-4 w-4 shrink-0 rounded-full border-2 ${
+                      call.ok
+                        ? 'border-coral-500 bg-cream-50'
+                        : 'border-coral-700 bg-coral-100'
+                    }`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <p className="text-sm font-semibold text-ink-800">
+                        {toolPlainName(call.name)}
+                      </p>
+                      <span className="text-xs text-ink-400">
+                        {toolDuration(call)}
+                        {call.ok ? '' : ' · failed'}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 font-mono text-xs text-ink-400">{call.name}</p>
                   </div>
-                  <p className="mt-1 font-mono text-xs text-gray-500">
-                    {JSON.stringify(call.input)}
-                  </p>
                 </li>
               ))}
             </ol>

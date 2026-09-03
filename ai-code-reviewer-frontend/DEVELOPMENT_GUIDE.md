@@ -1,4 +1,4 @@
-# AI Code Validator - Development Guide
+# Codebird — Development Guide
 
 ## Project Overview
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { BirdMark } from '@/components/brand/BirdMark';
 
 export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const sizes = {
@@ -10,7 +11,7 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`${sizes[size]} animate-spin rounded-full border-4 border-gray-200 border-t-primary-600`}
+        className={`${sizes[size]} animate-spin rounded-full border-4 border-cream-200 border-t-coral-500`}
       />
     </div>
   );
@@ -18,17 +19,15 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 
 export function PageLoader() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <LoadingSpinner size="lg" />
-        <p className="mt-4 text-gray-600">Loading...</p>
+    <div className="flex min-h-screen items-center justify-center bg-cream-50">
+      <div className="page-enter text-center">
+        <BirdMark size={56} animate />
+        <p className="mt-4 font-display text-lg text-ink-600">Codebird is looking…</p>
       </div>
     </div>
   );
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return (
-    <div className={`animate-pulse bg-gray-200 rounded ${className}`} />
-  );
+  return <div className={`animate-pulse rounded-xl bg-cream-200 ${className}`} />;
 }

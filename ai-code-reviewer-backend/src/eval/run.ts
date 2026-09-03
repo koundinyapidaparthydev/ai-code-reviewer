@@ -34,7 +34,7 @@ export async function runEval(): Promise<EvalReport> {
 
 function printReport(report: EvalReport): void {
   const pct = (value: number) => `${(value * 100).toFixed(1)}%`;
-  console.log('AI Code Reviewer eval');
+  console.log('Codebird eval');
   console.log(`fixtures: ${report.fixtureCount}`);
   console.log(`mode: ${report.reviewMode}${report.usedOpenAI ? '' : ' (no OpenAI key)'}`);
   console.log(`precision: ${pct(report.precision)}`);

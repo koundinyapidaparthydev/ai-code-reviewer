@@ -1,6 +1,6 @@
-# AI Code Validator - Backend
+# Codebird — Backend
 
-Backend API server for the AI Code Validator platform built with Node.js, Express, TypeScript, PostgreSQL, and Redis.
+Backend API server for Codebird, built with Node.js, Express, TypeScript, PostgreSQL, and Redis.
 
 ## Features
 

@@ -76,10 +76,10 @@ export default function ManualValidationPage() {
 
     try {
       const validationId = await createManualValidation(files);
-      toast.success('Validation started!');
+      toast.success('Codebird is reviewing your files');
       router.push(`/validations/${validationId}`);
     } catch (error) {
-      toast.error('Failed to start validation');
+      toast.error('Codebird could not start that review');
     }
   };
 
@@ -87,15 +87,15 @@ export default function ManualValidationPage() {
     <DashboardLayout>
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manual Validation</h1>
-          <p className="text-gray-600 mt-1">
-            Upload code files for AI-powered validation
+          <h1 className="font-display text-4xl font-semibold text-ink-800">New review</h1>
+          <p className="mt-1 text-ink-500">
+            Drop files here. Codebird reads them, then tells you what to fix.
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Upload Files</CardTitle>
+            <CardTitle>Hand Codebird a file</CardTitle>
           </CardHeader>
           <CardContent>
             <div
@@ -174,7 +174,7 @@ export default function ManualValidationPage() {
                 isLoading={loading}
                 className="flex-1"
               >
-                Start Validation
+                Ask Codebird to review
               </Button>
               <Button
                 variant="outline"

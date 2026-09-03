@@ -2,14 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Bell, User, LogOut } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useState } from 'react';
+import { CodebirdLogo } from '@/components/brand/CodebirdLogo';
 
 export function Navbar() {
-  const pathname = usePathname();
   const { user, logout } = useAuthStore();
   const { notifications, unreadCount, markAsRead } = useNotificationStore();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -21,49 +20,46 @@ export function Navbar() {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 fixed w-full z-30 top-0">
+    <nav className="fixed top-0 z-30 w-full border-b border-ink-100/80 bg-cream-50/90 backdrop-blur-md">
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link href="/dashboard" className="flex items-center">
-              <span className="text-xl font-bold text-primary-600">
-                AI Code Validator
-              </span>
-            </Link>
+        <div className="flex h-16 justify-between">
+          <div className="flex items-center gap-3">
+            <CodebirdLogo href="/dashboard" size="md" />
+            <span className="hidden rounded-full border border-amber-100 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-800 sm:inline">
+              Sandbox
+            </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* Notifications */}
+          <div className="flex items-center gap-2">
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                className="relative rounded-xl p-2 text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-800"
+                aria-label="Notifications"
               >
                 <Bell size={20} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-coral-500 text-[10px] text-cream-50">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 max-h-96 overflow-y-auto">
-                  <div className="px-4 py-2 border-b border-gray-200">
-                    <h3 className="text-sm font-semibold text-gray-900">
-                      Notifications
-                    </h3>
+                <div className="absolute right-0 mt-2 max-h-96 w-80 overflow-y-auto rounded-paper border border-ink-100 bg-cream-50 py-2 shadow-lift">
+                  <div className="border-b border-ink-100 px-4 py-2">
+                    <h3 className="text-sm font-semibold text-ink-800">Notifications</h3>
                   </div>
                   {notifications.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-gray-500 text-sm">
-                      No notifications
+                    <div className="px-4 py-8 text-center text-sm text-ink-400">
+                      Nothing new from Codebird
                     </div>
                   ) : (
                     notifications.slice(0, 10).map((notification) => (
                       <div
                         key={notification.id}
-                        className={`px-4 py-3 hover:bg-gray-50 cursor-pointer ${
-                          !notification.read ? 'bg-blue-50' : ''
+                        className={`cursor-pointer px-4 py-3 hover:bg-cream-100 ${
+                          !notification.read ? 'bg-coral-50' : ''
                         }`}
                         onClick={() => {
                           markAsRead(notification.id);
@@ -72,12 +68,8 @@ export function Navbar() {
                           }
                         }}
                       >
-                        <p className="text-sm font-medium text-gray-900">
-                          {notification.title}
-                        </p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {notification.message}
-                        </p>
+                        <p className="text-sm font-medium text-ink-800">{notification.title}</p>
+                        <p className="mt-1 text-xs text-ink-500">{notification.message}</p>
                       </div>
                     ))
                   )}
@@ -85,32 +77,31 @@ export function Navbar() {
               )}
             </div>
 
-            {/* User Menu */}
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2 p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                className="flex items-center gap-2 rounded-xl p-2 text-ink-500 transition-colors hover:bg-cream-100 hover:text-ink-800"
               >
                 <User size={20} />
-                <span className="hidden sm:block text-sm font-medium">
+                <span className="hidden text-sm font-medium text-ink-700 sm:block">
                   {user?.name || 'User'}
                 </span>
               </button>
 
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                <div className="absolute right-0 mt-2 w-48 rounded-paper border border-ink-100 bg-cream-50 py-2 shadow-lift">
                   <Link
                     href="/settings"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-ink-700 hover:bg-cream-100"
                   >
                     Settings
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
+                    className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-coral-600 hover:bg-cream-100"
                   >
                     <LogOut size={16} />
-                    Logout
+                    Sign out
                   </button>
                 </div>
               )}

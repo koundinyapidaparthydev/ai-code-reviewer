@@ -1,7 +1,7 @@
 {
   "name": "ai-code-reviewer-backend",
   "version": "1.0.0",
-  "description": "Backend API for AI Code Validator",
+  "description": "Backend API for Codebird",
   "main": "dist/server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",

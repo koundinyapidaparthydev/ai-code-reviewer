@@ -69,9 +69,9 @@ export default function SettingsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your account settings and preferences
+          <h1 className="font-display text-4xl font-semibold text-ink-800">Settings</h1>
+          <p className="mt-1 text-ink-500">
+            How Codebird talks to you
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function SettingsPage() {
                           Email Notifications
                         </p>
                         <p className="text-sm text-gray-500">
-                          Receive email notifications for validations
+                          Email me when Codebird finishes a review
                         </p>
                       </div>
                       <input
@@ -231,11 +231,11 @@ export default function SettingsPage() {
             {activeTab === 'preferences' && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Validation Preferences</CardTitle>
+                  <CardTitle>Review preferences</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-600">
-                    Configure default validation settings
+                  <p className="text-sm text-ink-500">
+                    How picky Codebird should be by default
                   </p>
                 </CardContent>
               </Card>

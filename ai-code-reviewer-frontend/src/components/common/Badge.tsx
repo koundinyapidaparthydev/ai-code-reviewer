@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn, getStatusColor } from '@/lib/utils';
+import { reviewStatusLabel } from '@/lib/reviewCopy';
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -9,17 +10,17 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'default', className }: BadgeProps) {
   const variants = {
-    default: 'bg-gray-100 text-gray-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    error: 'bg-red-100 text-red-800',
-    info: 'bg-blue-100 text-blue-800',
+    default: 'bg-ink-100 text-ink-700',
+    success: 'bg-sage-100 text-sage-700',
+    warning: 'bg-amber-100 text-amber-800',
+    error: 'bg-coral-100 text-coral-700',
+    info: 'bg-cream-200 text-ink-600',
   };
 
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-wide',
         variants[variant],
         className
       )}
@@ -32,18 +33,19 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
 interface StatusBadgeProps {
   status: string;
   className?: string;
+  friendly?: boolean;
 }
 
-export function StatusBadge({ status, className }: StatusBadgeProps) {
+export function StatusBadge({ status, className, friendly = true }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize',
         getStatusColor(status),
         className
       )}
     >
-      {status}
+      {friendly ? reviewStatusLabel(status) : status}
     </span>
   );
 }

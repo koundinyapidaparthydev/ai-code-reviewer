@@ -1,6 +1,6 @@
-# AI Code Validator - Frontend
+# Codebird — Frontend
 
-A modern Next.js application for validating code using AI-powered analysis.
+The Codebird web app: a bird reviews your code. Next.js UI over the reviewer API.
 
 ## Features
 

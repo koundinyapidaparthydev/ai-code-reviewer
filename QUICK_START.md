@@ -1,4 +1,4 @@
-# AI Code Validator - Quick Start
+# Codebird — Quick Start
 
 ## 🚀 Getting Started in 5 Minutes
 

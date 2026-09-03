@@ -1,13 +1,24 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Figtree, Fraunces } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 
-const inter = Inter({ subsets: ['latin'] });
+const figtree = Figtree({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+});
 
 export const metadata: Metadata = {
-  title: 'AI Code Validator',
-  description: 'Validate your code with AI-powered analysis',
+  title: {
+    default: 'Codebird',
+    template: '%s · Codebird',
+  },
+  description: 'A bird reviews your code. Codebird reads your files, then tells you what to fix.',
 };
 
 export default function RootLayout({
@@ -17,28 +28,31 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${figtree.variable} ${fraunces.variable} font-sans`}>
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#363636',
-              color: '#fff',
+              background: '#1C1612',
+              color: '#FBF7F0',
+              borderRadius: '14px',
+              boxShadow: '0 12px 28px rgba(28, 22, 18, 0.18)',
+              fontFamily: 'var(--font-sans)',
             },
             success: {
               duration: 3000,
               iconTheme: {
-                primary: '#10b981',
-                secondary: '#fff',
+                primary: '#E07A5F',
+                secondary: '#FBF7F0',
               },
             },
             error: {
               duration: 5000,
               iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
+                primary: '#C45A3E',
+                secondary: '#FBF7F0',
               },
             },
           }}

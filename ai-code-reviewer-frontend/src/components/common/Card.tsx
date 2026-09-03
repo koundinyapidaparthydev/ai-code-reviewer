@@ -5,14 +5,16 @@ interface CardProps {
   children: ReactNode;
   className?: string;
   hover?: boolean;
+  style?: React.CSSProperties;
 }
 
-export function Card({ children, className, hover }: CardProps) {
+export function Card({ children, className, hover, style }: CardProps) {
   return (
     <div
+      style={style}
       className={cn(
-        'bg-white rounded-lg border border-gray-200 shadow-sm',
-        hover && 'hover:shadow-md transition-shadow',
+        'rounded-paper border border-ink-100 bg-cream-50 shadow-paper',
+        hover && 'hover-lift',
         className
       )}
     >
@@ -28,7 +30,7 @@ interface CardHeaderProps {
 
 export function CardHeader({ children, className }: CardHeaderProps) {
   return (
-    <div className={cn('px-6 py-4 border-b border-gray-200', className)}>
+    <div className={cn('px-6 py-4 border-b border-ink-100', className)}>
       {children}
     </div>
   );
@@ -41,7 +43,7 @@ interface CardTitleProps {
 
 export function CardTitle({ children, className }: CardTitleProps) {
   return (
-    <h3 className={cn('text-lg font-semibold text-gray-900', className)}>
+    <h3 className={cn('font-display text-lg font-semibold text-ink-800', className)}>
       {children}
     </h3>
   );
@@ -63,7 +65,7 @@ interface CardFooterProps {
 
 export function CardFooter({ children, className }: CardFooterProps) {
   return (
-    <div className={cn('px-6 py-4 border-t border-gray-200 bg-gray-50', className)}>
+    <div className={cn('px-6 py-4 border-t border-ink-100 bg-cream-100/60', className)}>
       {children}
     </div>
   );

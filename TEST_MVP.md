@@ -1,6 +1,6 @@
 # Test MVP (items 41–65)
 
-Last run: 2026-09-02. Backend `npm test`: **14 suites, 37 tests, exit 0**. Frontend `npm test` (`tsc --noEmit`): **exit 0**.
+**Codebird** reviewer MVP. Last run: 2026-09-02. Backend `npm test`: **14 suites, 37 tests, exit 0**. Frontend `npm test` (`tsc --noEmit`): **exit 0**.
 
 ## Re-run
 

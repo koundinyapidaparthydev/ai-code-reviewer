@@ -1,6 +1,6 @@
 # 📚 Documentation Index
 
-Welcome to the AI Code Reviewer documentation! This index will help you navigate all available documentation.
+Welcome to the Codebird documentation! This index will help you navigate all available documentation.
 
 ---
 

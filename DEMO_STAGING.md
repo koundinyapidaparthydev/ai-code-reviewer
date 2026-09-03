@@ -1,6 +1,8 @@
 # Demo / staging (Deploy MVP)
 
-Local Docker Compose is the deploy. Railway, Fly, Render, and Vercel CLIs were not logged in, so nothing was pushed to a host. TLS is skipped on localhost. No custom domain. No extra cloud services. MCP stays stdio-only (`mcp-server/`) and is not in this stack.
+**Codebird** local Docker Compose is the deploy. Railway, Fly, Render, and Vercel CLIs were not logged in, so nothing was pushed to a host. TLS is skipped on localhost. No custom domain. No extra cloud services. MCP stays stdio-only (`mcp-server/`) and is not in this stack.
+
+Open http://localhost:3002 — the browser tab and login say **Codebird**. Sign in with the demo account below.
 
 ## URLs (this machine)
 

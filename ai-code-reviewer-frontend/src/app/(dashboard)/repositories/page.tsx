@@ -22,9 +22,9 @@ export default function RepositoriesPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Repositories</h1>
-            <p className="text-gray-600 mt-1">
-              Manage your connected GitHub repositories
+            <h1 className="font-display text-4xl font-semibold text-ink-800">Repositories</h1>
+            <p className="mt-1 text-ink-500">
+              Places Codebird can perch and review
             </p>
           </div>
           <Link href="/repositories/connect">
@@ -47,7 +47,7 @@ export default function RepositoriesPage() {
                 No repositories connected
               </h3>
               <p className="mt-2 text-sm text-gray-500">
-                Connect your first repository to start automated code validations
+                Connect a repository so Codebird can review new work automatically
               </p>
               <Link href="/repositories/connect" className="mt-6 inline-block">
                 <Button>

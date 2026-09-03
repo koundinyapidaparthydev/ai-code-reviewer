@@ -27,23 +27,24 @@ export function getStatusColor(status: string): string {
     case 'completed':
     case 'success':
     case 'active':
-      return 'text-green-600 bg-green-50';
+      return 'text-sage-700 bg-sage-50';
     case 'pending':
+    case 'processing':
     case 'warning':
-      return 'text-yellow-600 bg-yellow-50';
+      return 'text-amber-800 bg-amber-50';
     case 'failed':
     case 'error':
     case 'inactive':
-      return 'text-red-600 bg-red-50';
+      return 'text-coral-700 bg-coral-50';
     default:
-      return 'text-gray-600 bg-gray-50';
+      return 'text-ink-600 bg-ink-50';
   }
 }
 
 export function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-green-600';
-  if (score >= 60) return 'text-yellow-600';
-  return 'text-red-600';
+  if (score >= 80) return 'text-sage-600';
+  if (score >= 60) return 'text-amber-600';
+  return 'text-coral-600';
 }
 
 export function downloadFile(content: string, filename: string, type: string = 'text/plain') {

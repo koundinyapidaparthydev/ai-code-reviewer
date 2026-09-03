@@ -6,11 +6,12 @@ import { Card } from '@/components/common/Card';
 import { StatusBadge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, Pagination } from '@/components/common/Table';
+import { Pagination } from '@/components/common/Table';
 import { useValidationStore } from '@/store/validationStore';
-import { formatDateTime, truncateText } from '@/lib/utils';
+import { formatRelativeTime, getScoreColor } from '@/lib/utils';
+import { severityChipClass, severityCounts, worstSeverity } from '@/lib/reviewCopy';
 import Link from 'next/link';
-import { Search, Download, RefreshCw } from 'lucide-react';
+import { Search, RefreshCw } from 'lucide-react';
 
 export default function ValidationsPage() {
   const { validations, loading, pagination, fetchValidations, setPage, setFilters } =
@@ -33,8 +34,8 @@ export default function ValidationsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Validations</h1>
-            <p className="text-gray-600 mt-1">View and manage all code validations</p>
+            <h1 className="font-display text-4xl font-semibold text-ink-800">Reviews</h1>
+            <p className="mt-1 text-ink-500">Every time Codebird checked a file.</p>
           </div>
           <Button onClick={() => fetchValidations()}>
             <RefreshCw size={16} className="mr-2" />
@@ -42,12 +43,11 @@ export default function ValidationsPage() {
           </Button>
         </div>
 
-        {/* Filters */}
         <Card className="p-4">
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <div className="flex-1">
               <Input
-                placeholder="Search by commit message or hash..."
+                placeholder="Search by message or hash…"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -56,12 +56,12 @@ export default function ValidationsPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="rounded-xl border border-ink-200 bg-cream-50 px-4 py-2.5 text-ink-700 focus:outline-none focus:ring-2 focus:ring-coral-400"
             >
-              <option value="">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
+              <option value="">All reviews</option>
+              <option value="pending">Still looking</option>
+              <option value="completed">Review ready</option>
+              <option value="failed">Couldn&apos;t finish</option>
             </select>
             <Button onClick={handleSearch}>
               <Search size={16} className="mr-2" />
@@ -70,91 +70,95 @@ export default function ValidationsPage() {
           </div>
         </Card>
 
-        {/* Validations Table */}
-        <Card>
-          <Table>
-            <TableHeader>
-              <TableHead>Commit</TableHead>
-              <TableHead>Repository</TableHead>
-              <TableHead>Branch</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Score</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12">
-                    <div className="flex justify-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-primary-600" />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : validations.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12 text-gray-500">
-                    No validations found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                validations.map((validation) => (
-                  <TableRow
-                    key={validation.id}
-                    onClick={() => window.location.href = `/validations/${validation.id}`}
-                    className="cursor-pointer"
-                  >
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {truncateText(validation.commitHash, 8)}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {truncateText(validation.commitMessage, 40)}
-                        </p>
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-cream-200 border-t-coral-500" />
+          </div>
+        ) : validations.length === 0 ? (
+          <Card>
+            <p className="px-6 py-16 text-center text-ink-400">
+              No reviews yet. Upload a file and Codebird will take a look.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid gap-4">
+            {validations.map((validation, index) => {
+              const worst = worstSeverity(validation.findings);
+              const counts = severityCounts(validation.findings);
+              const chips = (['critical', 'high', 'medium', 'low'] as const).filter(
+                (key) => counts[key] > 0
+              );
+
+              return (
+                <Link
+                  key={validation.id}
+                  href={`/validations/${validation.id}`}
+                  className="stagger-in hover-lift block rounded-paper border border-ink-100 bg-cream-50 p-5 shadow-paper"
+                  style={{ '--i': index } as React.CSSProperties}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <StatusBadge status={validation.status} />
+                        {chips.map((severity) => (
+                          <span
+                            key={severity}
+                            className={`rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase ${severityChipClass(
+                              severity
+                            )}`}
+                          >
+                            {counts[severity]} {severity}
+                          </span>
+                        ))}
+                        {!worst && validation.status !== 'pending' && (
+                          <span className="text-xs text-ink-400">No issues flagged</span>
+                        )}
                       </div>
-                    </TableCell>
-                    <TableCell className="text-sm text-gray-700">
-                      {validation.repositoryName}
-                    </TableCell>
-                    <TableCell className="text-sm text-gray-700">
-                      {validation.branchName}
-                    </TableCell>
-                    <TableCell>
-                      <StatusBadge status={validation.status} />
-                    </TableCell>
-                    <TableCell>
+                      <h2 className="mt-3 font-display text-xl font-semibold text-ink-800">
+                        {validation.commitMessage}
+                      </h2>
+                      <p className="mt-1 text-sm text-ink-500">
+                        {validation.repositoryName} · {validation.branchName}
+                        {validation.filesAnalyzed
+                          ? ` · ${validation.filesAnalyzed} file${
+                              validation.filesAnalyzed === 1 ? '' : 's'
+                            }`
+                          : ''}
+                      </p>
+                      <p className="mt-2 text-xs text-ink-400">
+                        {validation.timestamp ? formatRelativeTime(validation.timestamp) : ''}
+                      </p>
+                    </div>
+                    <div className="text-right">
                       {validation.overallScore !== undefined ? (
-                        <span className="font-semibold">{validation.overallScore}</span>
+                        <>
+                          <p
+                            className={`font-display text-3xl font-semibold ${getScoreColor(
+                              validation.overallScore
+                            )}`}
+                          >
+                            {validation.overallScore}
+                          </p>
+                          <p className="text-xs text-ink-400">score</p>
+                        </>
                       ) : (
-                        <span className="text-gray-400">-</span>
+                        <p className="text-sm text-ink-400">In flight</p>
                       )}
-                    </TableCell>
-                    <TableCell className="text-sm text-gray-600">
-                      {formatDateTime(validation.timestamp)}
-                    </TableCell>
-                    <TableCell>
-                      <Link
-                        href={`/validations/${validation.id}`}
-                        className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        View
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-          {!loading && validations.length > 0 && (
-            <Pagination
-              currentPage={pagination.page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
-          )}
-        </Card>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {!loading && validations.length > 0 && (
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
       </div>
     </DashboardLayout>
   );

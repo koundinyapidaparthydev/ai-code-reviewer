@@ -49,11 +49,11 @@ export default function ConnectRepositoryPage() {
     <DashboardLayout>
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Connect Repository
+          <h1 className="font-display text-4xl font-semibold text-ink-800">
+            Connect a nest
           </h1>
           <p className="text-gray-600 mt-1">
-            Connect your GitHub repository for automated code validation
+            Connect GitHub so Codebird can review new work automatically
           </p>
         </div>
 

@@ -96,7 +96,7 @@ interface PaginationProps {
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+    <div className="flex items-center justify-between border-t border-ink-100 bg-cream-50 px-4 py-3 sm:px-6">
       <div className="flex justify-between flex-1 sm:hidden">
         <Button
           onClick={() => onPageChange(currentPage - 1)}

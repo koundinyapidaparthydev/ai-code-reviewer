@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <p>Redirecting...</p>
+      <p className="text-ink-500">Taking you to Codebird…</p>
     </div>
   );
 }

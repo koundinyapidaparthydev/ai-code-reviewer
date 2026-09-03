@@ -11,6 +11,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { CodebirdLogo } from '@/components/brand/CodebirdLogo';
 
 const navigation = [
   {
@@ -19,7 +20,7 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
-    name: 'Validations',
+    name: 'Reviews',
     href: '/validations',
     icon: FileCheck,
   },
@@ -29,7 +30,7 @@ const navigation = [
     icon: GitBranch,
   },
   {
-    name: 'Manual Validation',
+    name: 'New review',
     href: '/manual-validation',
     icon: Upload,
   },
@@ -45,8 +46,11 @@ export function Sidebar() {
 
   return (
     <aside className="hidden md:flex md:flex-shrink-0">
-      <div className="flex flex-col w-64 border-r border-gray-200 bg-white pt-5 pb-4">
-        <nav className="mt-5 flex-1 px-2 space-y-1">
+      <div className="flex w-64 flex-col border-r border-ink-100 bg-cream-50/70 pb-4 pt-5">
+        <div className="mb-6 px-5 md:hidden">
+          <CodebirdLogo size="sm" />
+        </div>
+        <nav className="mt-2 flex-1 space-y-1 px-3">
           {navigation.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
             const Icon = item.icon;
@@ -56,16 +60,16 @@ export function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                  'group flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150',
                   isActive
-                    ? 'bg-primary-50 text-primary-600'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-coral-50 text-coral-700 shadow-sm'
+                    : 'text-ink-600 hover:bg-cream-100 hover:text-ink-800'
                 )}
               >
                 <Icon
                   className={cn(
-                    'mr-3 flex-shrink-0 h-5 w-5',
-                    isActive ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'
+                    'mr-3 h-5 w-5 flex-shrink-0 transition-colors',
+                    isActive ? 'text-coral-600' : 'text-ink-400 group-hover:text-ink-600'
                   )}
                 />
                 {item.name}
@@ -73,6 +77,9 @@ export function Sidebar() {
             );
           })}
         </nav>
+        <p className="px-5 pt-4 text-xs leading-relaxed text-ink-400">
+          A bird reviews your code.
+        </p>
       </div>
     </aside>
   );

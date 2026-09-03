@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import apiClient from '@/lib/api';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { AuthShell } from '@/components/auth/AuthShell';
 import { CheckCircle } from 'lucide-react';
 
 interface ForgotPasswordForm {
@@ -28,9 +29,9 @@ export default function ForgotPasswordPage() {
     try {
       await apiClient.forgotPassword(data.email);
       setEmailSent(true);
-      toast.success('Password reset instructions sent to your email');
+      toast.success('Codebird sent reset instructions');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to send reset email');
+      toast.error(error.response?.data?.message || 'Codebird could not send that email');
     } finally {
       setIsLoading(false);
     }
@@ -38,40 +39,38 @@ export default function ForgotPasswordPage() {
 
   if (emailSent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full">
-          <div className="text-center">
-            <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-              Check your email
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              We've sent password reset instructions to your email address.
-            </p>
-            <div className="mt-8">
-              <Link href="/login">
-                <Button variant="primary">Back to login</Button>
-              </Link>
-            </div>
+      <AuthShell>
+        <div className="paper-card px-8 py-10 text-center">
+          <CheckCircle className="mx-auto h-14 w-14 text-sage-600" />
+          <h1 className="mt-5 font-display text-3xl font-semibold text-ink-800">
+            Check your email
+          </h1>
+          <p className="mt-2 text-sm text-ink-500">
+            Codebird sent password reset instructions to your inbox.
+          </p>
+          <div className="mt-8">
+            <Link href="/login">
+              <Button variant="primary">Back to Codebird</Button>
+            </Link>
           </div>
         </div>
-      </div>
+      </AuthShell>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <AuthShell>
+      <div className="paper-card px-8 py-8">
+        <div className="mb-7 text-center">
+          <h1 className="font-display text-3xl font-semibold text-ink-800">
             Reset your password
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we'll send you instructions to reset your password.
+          </h1>
+          <p className="mt-2 text-sm text-ink-500">
+            Enter your email and Codebird will send reset instructions.
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Email"
             type="email"
@@ -98,12 +97,12 @@ export default function ForgotPasswordPage() {
 
             <Link href="/login" className="block text-center">
               <Button type="button" variant="ghost" className="w-full">
-                Back to login
+                Back to sign in
               </Button>
             </Link>
           </div>
         </form>
       </div>
-    </div>
+    </AuthShell>
   );
 }

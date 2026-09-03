@@ -1,6 +1,6 @@
-# AI Code Reviewer - Complete Setup Guide
+# Codebird — Complete Setup Guide
 
-This guide will walk you through setting up and running the AI Code Reviewer application. The application consists of a Next.js frontend and a Node.js/Express backend with PostgreSQL database.
+This guide will walk you through setting up and running Codebird. The application consists of a Next.js frontend and a Node.js/Express backend with PostgreSQL database.
 
 ## 📋 Table of Contents
 
