@@ -1,6 +1,8 @@
 # Codebird
 
-https://github.com/koundinyapidaparthydev/ai-code-reviewer/releases/download/demo/demo.mp4
+<video src="https://github.com/koundinyapidaparthydev/ai-code-reviewer/releases/download/demo/demo.mp4" width="100%" controls muted playsinline>
+  <a href="https://github.com/koundinyapidaparthydev/ai-code-reviewer/releases/download/demo/demo.mp4">Watch the Codebird demo</a>
+</video>
 
 A bird reviews your code. Codebird reads your files, then tells you what to fix.
 
