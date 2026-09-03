@@ -1,5 +1,7 @@
 # Codebird
 
+https://github.com/koundinyapidaparthydev/ai-code-reviewer/releases/download/demo/demo.mp4
+
 A bird reviews your code. Codebird reads your files, then tells you what to fix.
 
 Tool-using code reviewer MVP: upload a workspace, queue a job, inspect with sandboxed tools, persist findings, and score labeled evals. Optional local stdio MCP extract. Not a marketplace, not hosted MCP.
